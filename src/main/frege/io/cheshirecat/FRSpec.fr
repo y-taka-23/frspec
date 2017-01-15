@@ -1,3 +1,45 @@
 module io.cheshirecat.FRSpec where
 
+-- type stabs
+type WriterT w m a = ()
+type Location = ()
+type Params = ()
+type Result = ()
+
+type SpecWith a = SpecM a ()
+
+type ActionWith a = a -> IO ()
+
+data Tree c a =
+      Node String [Tree a c]
+    | NodeWithCleanup c [Tree c a]
+    | Leaf a
+
+-- instance Functor (Tree c) where
+-- instance Foldable (Tree c) where
+-- instance Traversable (Tree c) where
+
+type Progress = (Int, Int)
+
+type ProgressCallback = Progress -> IO ()
+
+data Item a = Item
+    { itemRequirement      :: String
+    , itemLocation         :: Maybe Location
+    , itemIsParallelizable :: Bool
+    , itemExample          :: Params -> (ActionWith a -> IO ()) ->
+                              ProgressCallback -> IO Result
+    }
+
+type SpecTree a = Tree (ActionWith a) (Item a)
+
+type SpecM a r = WriterT [SpecTree a] IO r
+
+--instance Functor (SpecM a r) where
+--instance Applicative (SpecM a r) where
+--instance Monad (SpecM a r) where
+
+describe :: String -> SpecWith a -> SpecWith a
+describe = undefined
+
 main = println "Hello, FRSpec!"
