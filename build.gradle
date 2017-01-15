@@ -1,0 +1,21 @@
+plugins {
+    id 'org.frege-lang' version '0.5'
+}
+
+apply plugin: 'org.frege-lang'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.frege-lang:frege:3.23.288-gaa3af0c'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.0'
+}
+
