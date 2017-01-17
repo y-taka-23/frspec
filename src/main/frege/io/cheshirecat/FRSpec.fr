@@ -2,9 +2,8 @@ module io.cheshirecat.FRSpec where
 
 -- type stabs
 type WriterT w m a = ()
-type Location = ()
-type Params = ()
-type Result = ()
+type FilePath = String
+type Args = () -- Defined in QuichCheck
 
 type SpecWith a = SpecM a ()
 
@@ -15,13 +14,51 @@ data Tree c a =
     | NodeWithCleanup c [Tree c a]
     | Leaf a
 
--- instance Functor (Tree c) where
--- instance Foldable (Tree c) where
--- instance Traversable (Tree c) where
+--instance Functor (Tree c) where
+--instance Foldable (Tree c) where
+--instance Traversable (Tree c) where
+
+data Params = Params
+    { paramsQuickCheckArgs  :: Args
+    , paramsSmallCheckDepth :: Int
+    }
+
+--instance Show Params where
 
 type Progress = (Int, Int)
 
 type ProgressCallback = Progress -> IO ()
+
+data LocationAccuracy =
+      ExactLocation
+    | BestEffort
+
+--instance Eq LocationAccuracy
+--instance Read LocationAccuracy
+--instance Show LocationAccuracy
+
+data Location = Location
+    { locationFile     :: FilePath
+    , locationLine     :: Int
+    , locationColumn   :: Int
+    , locationAccuracy :: LocationAccuracy
+    }
+
+--instance Eq Location where
+--instance Read Location where
+--instance Show Location where
+
+data Result =
+      Success
+    | Pending (Maybe String)
+    | Fail (Maybe Location) String
+
+--instance Eq Result where
+--instance Read Result where
+--instance Show Result where
+--instance Exception Result where
+--instance Example Result where
+--type Arg Result
 
 data Item a = Item
     { itemRequirement      :: String
