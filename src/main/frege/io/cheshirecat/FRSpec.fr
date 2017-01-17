@@ -4,6 +4,7 @@ module io.cheshirecat.FRSpec where
 type WriterT w m a = ()
 type FilePath = String
 type Args = () -- Defined in QuichCheck
+type Arg e = () -- inner type of Example
 
 type SpecWith a = SpecM a ()
 
@@ -78,5 +79,33 @@ type SpecM a r = WriterT [SpecTree a] IO r
 
 describe :: String -> SpecWith a -> SpecWith a
 describe = undefined
+
+class Example e where
+    evaluateExample :: e -> Params -> (ActionWith (Arg e) -> IO ()) ->
+                       ProgressCallback -> IO Result
+
+--it :: (?loc :: CallStack, Example a) => String -> a -> SpecWith (Arg a)
+it :: (Example a) => String -> a -> SpecWith (Arg a)
+it = undefined
+
+type Spec = SpecWith ()
+
+hspec :: Spec -> IO ()
+hspec = undefined
+
+
+---------- in hspec-expectations -----------------
+
+type Expectation = Assertion
+
+--shouldBe :: (?loc :: CallStack, Show a, Eq a) => a -> a -> Expectation
+shouldBe :: (Show a, Eq a) => a -> a -> Expectation
+shouldBe = undefined
+infix 1 shouldBe
+
+---------- in HUnit -----------------
+
+type Assertion = IO ()
+
 
 main = println "Hello, FRSpec!"
