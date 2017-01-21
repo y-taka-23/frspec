@@ -84,6 +84,16 @@ class Example e where
     evaluateExample :: e -> Params -> (ActionWith (Arg e) -> IO ()) ->
                        ProgressCallback -> IO Result
 
+--instance Example Bool where
+--instance Example Property where
+--instance Example Result where
+
+instance Example Expectation where
+    evaluateExample e _ _ _ = undefined
+
+--instance Example (a -> Expectation) where
+--instance Example (a -> Property) where
+
 --it :: (?loc :: CallStack, Example a) => String -> a -> SpecWith (Arg a)
 it :: (Example a) => String -> a -> SpecWith (Arg a)
 it = undefined
