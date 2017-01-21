@@ -108,4 +108,7 @@ infix 1 shouldBe
 type Assertion = IO ()
 
 
-main = println "Hello, FRSpec!"
+main = hspec $ do
+    describe "Prelude.head" $ do
+        it "returns the first element of a list" $ do
+            head [23 ..] `shouldBe` 23
