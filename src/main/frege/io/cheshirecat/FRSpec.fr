@@ -1,5 +1,7 @@
 module io.cheshirecat.FRSpec where
 
+import frege.java.Lang ( System.exit )
+
 -- type stabs
 type WriterT w m a = ()
 type FilePath = String
@@ -101,8 +103,41 @@ it = undefined
 type Spec = SpecWith ()
 
 hspec :: Spec -> IO ()
-hspec = undefined
+hspec = hspecWith defaultConfig
 
+hspecWith :: Config -> Spec -> IO ()
+hspecWith conf spec = do
+    r <- hspecWithResult conf spec
+    unless (isSuccess r) exitFailure
+
+-- TODO: In v3.23, exitFailure have not merged...
+exitFailure :: IO ()
+exitFailure = System.exit 1
+
+data Config = Config
+    { configNested     :: Bool
+    , configFormatter  :: Maybe String
+    , configNoMain     :: Bool
+    , configModuleName :: Maybe Bool
+    }
+derive Eq   Config
+derive Show Config
+
+defaultConfig :: Config
+defaultConfig = Config false Nothing false Nothing
+
+data Summary = Summary
+    { summaryExamples :: Int
+    , summaryFailures :: Int
+    }
+derive Eq   Summary
+derive Show Summary
+
+isSuccess :: Summary -> Bool
+isSuccess = undefined
+
+hspecWithResult :: Config -> Spec -> IO Summary
+hspecWithResult = undefined
 
 ---------- in hspec-expectations -----------------
 
