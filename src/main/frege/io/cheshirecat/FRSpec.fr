@@ -164,7 +164,17 @@ type Assertion = IO ()
 
 --(?loc :: CallStack) => String -> Assertion
 assertFailure :: String -> Assertion
-assertFailure msg = undefined
+assertFailure msg = msg `deepseq` throwIO (HUnitFailure.new msg)
+
+---------- others -----------------
+
+--TODO: Is there an more better exception than IAE?
+data HUnitFailure = pure native java.lang.IllegalArgumentException where
+    pure native new :: String -> HUnitFailure
+
+--TODO: the original deepseq evaluate the 1st arg strictly
+--deepseq :: (NFData a) => a -> b -> b
+deepseq _ = id
 
 
 main = hspec $ do
