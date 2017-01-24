@@ -145,12 +145,26 @@ type Expectation = Assertion
 
 --shouldBe :: (?loc :: CallStack, Show a, Eq a) => a -> a -> Expectation
 shouldBe :: (Show a, Eq a) => a -> a -> Expectation
-shouldBe = undefined
+actual `shouldBe` expected = expectTrue
+    ("expected: " ++ show expected ++ "\n but got: " ++ show actual)
+    (actual == expected)
 infix 1 shouldBe
+
+--expectTrue :: (?loc :: CallStack) => String -> Bool -> Expectation
+expectTrue :: String -> Bool -> Expectation
+expectTrue msg b = unless b (expectationFailure msg)
+
+--expectationFailure :: (?loc :: CallStack) => String -> Expectation
+expectationFailure :: String -> Expectation
+expectationFailure = assertFailure
 
 ---------- in HUnit -----------------
 
 type Assertion = IO ()
+
+--(?loc :: CallStack) => String -> Assertion
+assertFailure :: String -> Assertion
+assertFailure msg = undefined
 
 
 main = hspec $ do
