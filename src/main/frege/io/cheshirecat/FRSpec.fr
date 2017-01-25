@@ -134,7 +134,7 @@ derive Eq   Summary
 derive Show Summary
 
 isSuccess :: Summary -> Bool
-isSuccess = undefined
+isSuccess summary = summary.summaryFailures == 0
 
 hspecWithResult :: Config -> Spec -> IO Summary
 hspecWithResult = undefined
