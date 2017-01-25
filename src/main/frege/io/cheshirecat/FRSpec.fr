@@ -1,9 +1,9 @@
 module io.cheshirecat.FRSpec where
 
+import frege.data.Monoid ( Monoid )
 import frege.java.Lang ( System.exit )
 
 -- type stabs
-type WriterT w m a = ()
 type FilePath = String
 type Args = () -- Defined in QuichCheck
 type Arg e = () -- inner type of Example
@@ -175,6 +175,16 @@ data HUnitFailure = pure native java.lang.IllegalArgumentException where
 --TODO: the original deepseq evaluate the 1st arg strictly
 --deepseq :: (NFData a) => a -> b -> b
 deepseq _ = id
+
+--TODO: using StateT transformer is better?
+-- Frege doesn't have the Writer monad
+data WriterT w m a = WriterT { run :: m (a, w) }
+
+writer :: (Monad m) => (a, w) -> WriterT w m a
+writer = WriterT . return
+
+tell :: (Monoid w, Monad m) => w -> WriterT w m ()
+tell x = writer ((), x)
 
 
 main = hspec $ do
