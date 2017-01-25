@@ -73,7 +73,7 @@ data Item a = Item
 
 type SpecTree a = Tree (ActionWith a) (Item a)
 
-type SpecM a r = WriterT [SpecTree a] IO r
+data SpecM a r = SpecM (WriterT [SpecTree a] IO r)
 
 --instance Functor (SpecM a r) where
 --instance Applicative (SpecM a r) where
@@ -98,7 +98,14 @@ instance Example Expectation where
 
 --it :: (?loc :: CallStack, Example a) => String -> a -> SpecWith (Arg a)
 it :: (Example a) => String -> a -> SpecWith (Arg a)
-it = undefined
+it label action = fromSpecList [ specItem label action ]
+
+fromSpecList :: [SpecTree a] -> SpecWith a
+fromSpecList = SpecM . tell
+
+--specItem :: (?loc :: CallStack, Example a) => String -> a -> SpecTree (Arg a)
+specItem :: (Example a) => String -> a -> SpecTree (Arg a)
+specItem s e = undefined
 
 type Spec = SpecWith ()
 
