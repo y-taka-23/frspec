@@ -1,5 +1,6 @@
 module io.cheshirecat.FRSpec where
 
+import frege.control.monad.trans.MonadIO ( liftIO )
 import frege.data.Monoid ( Monoid )
 import frege.java.Lang ( System.exit )
 
@@ -75,12 +76,20 @@ type SpecTree a = Tree (ActionWith a) (Item a)
 
 data SpecM a r = SpecM (WriterT [SpecTree a] IO r)
 
+runSpecM :: SpecWith a -> IO [SpecTree a]
+runSpecM (SpecM spec) = execWriterT spec
+
 --instance Functor (SpecM a r) where
 --instance Applicative (SpecM a r) where
 --instance Monad (SpecM a r) where
 
 describe :: String -> SpecWith a -> SpecWith a
-describe = undefined
+describe label spec = undefined
+--    runIO (runSpecM spec) >>= fromSpecList . return . specGroup label
+
+runIO :: IO r -> SpecM a r
+--runIO = SpecM . liftIO
+runIO = undefined
 
 class Example e where
     evaluateExample :: e -> Params -> (ActionWith (Arg e) -> IO ()) ->
@@ -111,6 +120,9 @@ specItem s e = Leaf $ Item requirement Nothing false e.evaluateExample
         requirement
             | null s    = "(unspecified behavior)"
             | otherwise = s
+
+specGroup :: String -> [SpecTree a] -> SpecTree a
+specGroup = undefined
 
 type Spec = SpecWith ()
 
@@ -197,6 +209,9 @@ writer = WriterT . return
 
 tell :: (Monoid w, Monad m) => w -> WriterT w m ()
 tell x = writer ((), x)
+
+execWriterT :: (Monad m) => WriterT w m a -> m w
+execWriterT = undefined
 
 
 main = hspec $ do
