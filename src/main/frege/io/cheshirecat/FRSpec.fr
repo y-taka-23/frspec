@@ -1,7 +1,7 @@
 module io.cheshirecat.FRSpec where
 
 import frege.control.monad.trans.MonadIO ( liftIO )
-import frege.data.Monoid ( Monoid )
+import frege.data.Monoid ( Monoid, mappend )
 import frege.java.Lang ( System.exit )
 
 -- type stabs
@@ -204,14 +204,33 @@ deepseq _ = id
 -- Frege doesn't have the Writer monad
 data WriterT w m a = WriterT { run :: m (a, w) }
 
+mapWriterT :: (m (a, w) -> n (b, w')) -> WriterT w m a -> WriterT w' n b
+mapWriterT f m = WriterT $ f m.run
+
+instance (Functor m) => Functor (WriterT w m) where
+    fmap f = mapWriterT $ fmap $ \(x, w) -> (f x, w)
+
+instance (Monoid w, Applicative m) => Applicative (WriterT w m) where
+    pure x = WriterT $ pure (x, mempty)
+    (<*>) f v = WriterT $ liftA2 k f.run v.run
+        where
+            k (g, w) (x, w') = (g x, w `mappend` w')
+
+instance (Monoid w, Monad m) => Monad (WriterT w m) where
+    pure = Applicative.pure
+    (>>=) m k = WriterT $ do
+        (x, w)  <- m.run
+        (y, w') <- (k x).run
+        return (y, w `mappend` w')
+
+execWriterT :: (Monad m) => WriterT w m a -> m w
+execWriterT = undefined
+
 writer :: (Monad m) => (a, w) -> WriterT w m a
 writer = WriterT . return
 
 tell :: (Monoid w, Monad m) => w -> WriterT w m ()
 tell x = writer ((), x)
-
-execWriterT :: (Monad m) => WriterT w m a -> m w
-execWriterT = undefined
 
 
 main = hspec $ do
