@@ -224,7 +224,9 @@ instance (Monoid w, Monad m) => Monad (WriterT w m) where
         return (y, w `mappend` w')
 
 execWriterT :: (Monad m) => WriterT w m a -> m w
-execWriterT = undefined
+execWriterT m = do
+    (_, w) <- m.run
+    return w
 
 writer :: (Monad m) => (a, w) -> WriterT w m a
 writer = WriterT . return
