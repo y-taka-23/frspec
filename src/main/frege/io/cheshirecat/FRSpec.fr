@@ -79,9 +79,14 @@ data SpecM a r = SpecM (WriterT [SpecTree a] IO r)
 runSpecM :: SpecWith a -> IO [SpecTree a]
 runSpecM (SpecM spec) = execWriterT spec
 
---instance Functor (SpecM a r) where
---instance Applicative (SpecM a r) where
---instance Monad (SpecM a r) where
+instance Functor (SpecM a) where
+    fmap f (SpecM spec) = SpecM $ fmap f spec
+
+instance Applicative (SpecM a) where
+    pure = SpecM . pure
+    (<*>) (SpecM f) (SpecM v) = SpecM $ f <*> v
+
+--instance Monad (SpecM a) where
 
 describe :: String -> SpecWith a -> SpecWith a
 describe label spec = undefined
