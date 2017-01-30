@@ -86,11 +86,14 @@ instance Applicative (SpecM a) where
     pure = SpecM . pure
     (<*>) (SpecM f) (SpecM v) = SpecM $ f <*> v
 
---instance Monad (SpecM a) where
+instance Monad (SpecM a) where
+    pure = Applicative.pure
+    (>>=) (SpecM m) k = SpecM $ m >>= unSpecM . k
+        where unSpecM (SpecM x) = x
 
 describe :: String -> SpecWith a -> SpecWith a
-describe label spec = undefined
---    runIO (runSpecM spec) >>= fromSpecList . return . specGroup label
+describe label spec =
+    runIO (runSpecM spec) >>= fromSpecList . return . specGroup label
 
 runIO :: IO r -> SpecM a r
 --runIO = SpecM . liftIO
