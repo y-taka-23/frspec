@@ -1,6 +1,6 @@
 module io.cheshirecat.FRSpec where
 
-import frege.control.monad.trans.MonadIO ( liftIO )
+import frege.control.monad.trans.MonadIO ( MonadIO, liftIO )
 import frege.data.Monoid ( Monoid, mappend )
 import frege.java.Lang ( System.exit )
 
@@ -96,8 +96,7 @@ describe label spec =
     runIO (runSpecM spec) >>= fromSpecList . return . specGroup label
 
 runIO :: IO r -> SpecM a r
---runIO = SpecM . liftIO
-runIO = undefined
+runIO = SpecM . liftIO
 
 class Example e where
     evaluateExample :: e -> Params -> (ActionWith (Arg e) -> IO ()) ->
@@ -230,6 +229,9 @@ instance (Monoid w, Monad m) => Monad (WriterT w m) where
         (x, w)  <- m.run
         (y, w') <- (k x).run
         return (y, w `mappend` w')
+
+instance (Monoid w, Monad m) => MonadIO (WriterT w m) where
+    liftIO = undefined
 
 execWriterT :: (Monad m) => WriterT w m a -> m w
 execWriterT m = do
