@@ -230,7 +230,7 @@ instance (Monoid w, Monad m) => Monad (WriterT w m) where
         (y, w') <- (k x).run
         return (y, w `mappend` w')
 
-instance (Monoid w, Monad m) => MonadIO (WriterT w m) where
+instance (Monoid w, MonadIO m) => MonadIO (WriterT w m) where
     liftIO = undefined
 
 execWriterT :: (Monad m) => WriterT w m a -> m w
