@@ -1,6 +1,7 @@
 module io.cheshirecat.FRSpec where
 
 import frege.control.monad.trans.MonadIO ( MonadIO, liftIO )
+import frege.control.monad.trans.MonadTrans ( MonadTrans, lift )
 import frege.data.Monoid ( Monoid, mappend )
 import frege.java.Lang ( System.exit )
 
@@ -231,7 +232,12 @@ instance (Monoid w, Monad m) => Monad (WriterT w m) where
         return (y, w `mappend` w')
 
 instance (Monoid w, MonadIO m) => MonadIO (WriterT w m) where
-    liftIO = undefined
+    liftIO = lift . liftIO
+
+instance (Monoid w) => MonadTrans (WriterT w) where
+    lift m = WriterT $ do
+        x <- m
+        return (x, mempty)
 
 execWriterT :: (Monad m) => WriterT w m a -> m w
 execWriterT m = do
