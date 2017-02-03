@@ -15,7 +15,7 @@ type SpecWith a = SpecM a ()
 type ActionWith a = a -> IO ()
 
 data Tree c a =
-      Node String [Tree a c]
+      Node String [Tree c a]
     | NodeWithCleanup c [Tree c a]
     | Leaf a
 
@@ -130,7 +130,11 @@ specItem s e = Leaf $ Item requirement Nothing false e.evaluateExample
             | otherwise = s
 
 specGroup :: String -> [SpecTree a] -> SpecTree a
-specGroup = undefined
+specGroup s = Node msg
+    where
+        msg
+            | null s    = "(no description given)"
+            | otherwise = s
 
 type Spec = SpecWith ()
 
