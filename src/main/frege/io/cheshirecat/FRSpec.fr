@@ -99,6 +99,7 @@ describe label spec =
 runIO :: IO r -> SpecM a r
 runIO = SpecM . liftIO
 
+-- TODO: how can I realize the inner type 'Arg e'?
 class Example e where
     evaluateExample :: e -> Params -> (ActionWith (Arg e) -> IO ()) ->
                        ProgressCallback -> IO Result
@@ -109,9 +110,14 @@ class Example e where
 --instance Example Result where
 
 instance Example Expectation where
-    evaluateExample e _ _ _ = undefined
+    evaluateExample e = evaluateExample (\() -> e)
 
---instance Example (a -> Expectation) where
+instance Example (a -> Expectation) where
+    evaluateExample e _ action _ = undefined
+
+hunitFailureToResult :: HUnitFailure -> Result
+hunitFailureToResult = undefined
+
 --instance Example (a -> Property) where
 
 --it :: (?loc :: CallStack, Example a) => String -> a -> SpecWith (Arg a)
@@ -253,6 +259,13 @@ writer = WriterT . return
 
 tell :: (Monoid w, Monad m) => w -> WriterT w m ()
 tell x = writer ((), x)
+
+catches :: IO a -> [Handler a] -> IO a
+catches io handlers = fold catch (try (\() -> io) ()) handlers
+
+type Handler a = Throwable -> IO a
+
+-- instance Functor Hander where
 
 
 main = hspec $ do
