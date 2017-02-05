@@ -101,7 +101,7 @@ runIO = SpecM . liftIO
 
 -- TODO: how can I realize the inner type 'Arg e'?
 class Example e where
-    evaluateExample :: e -> Params -> (ActionWith (Arg e) -> IO ()) ->
+    evaluateExample :: e -> Params -> (ActionWith t -> IO ()) ->
                        ProgressCallback -> IO Result
 --    type Arg e
 
@@ -112,8 +112,14 @@ class Example e where
 instance Example Expectation where
     evaluateExample e = evaluateExample (\() -> e)
 
+-- Todo: How can I make exceptions polymorphic?
 instance Example (a -> Expectation) where
-    evaluateExample e _ action _ = undefined
+    evaluateExample e _ (action :: ActionWith a -> IO ()) _ =
+        (action e >> return Success) `catches`
+            [ return . hunitFailureToResult ]
+--            [ return . hunitFailureToResult
+--            , return :: Result -> IO Result
+--            ]
 
 hunitFailureToResult :: HUnitFailure -> Result
 hunitFailureToResult = undefined
