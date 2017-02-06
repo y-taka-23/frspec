@@ -122,7 +122,7 @@ instance Example (a -> Expectation) where
 --            ]
 
 hunitFailureToResult :: HUnitFailure -> Result
-hunitFailureToResult = undefined
+hunitFailureToResult e = Fail Nothing e.getMessage
 
 --instance Example (a -> Property) where
 
@@ -218,7 +218,8 @@ assertFailure msg = msg `deepseq` throwIO (HUnitFailure.new msg)
 
 --TODO: Is there an more better exception than IAE?
 data HUnitFailure = pure native java.lang.IllegalArgumentException where
-    pure native new :: String -> HUnitFailure
+    pure native new        :: String -> HUnitFailure
+    pure native getMessage :: HUnitFailure -> String
 
 --TODO: the original deepseq evaluate the 1st arg strictly
 --deepseq :: (NFData a) => a -> b -> b
