@@ -185,7 +185,14 @@ isSuccess :: Summary -> Bool
 isSuccess summary = summary.summaryFailures == 0
 
 hspecWithResult :: Config -> Spec -> IO Summary
-hspecWithResult = undefined
+hspecWithResult conf spec = do
+    prog <- getProgName
+    args <- getArgs
+    c    <- getConfig conf prog args >>= ensureSeed
+    return $ Summary 0 0
+
+ensureSeed :: Config -> IO Config
+ensureSeed = undefined
 
 ---------- in hspec-expectations -----------------
 
@@ -205,6 +212,9 @@ expectTrue msg b = unless b (expectationFailure msg)
 --expectationFailure :: (?loc :: CallStack) => String -> Expectation
 expectationFailure :: String -> Expectation
 expectationFailure = assertFailure
+
+getConfig :: Config -> String -> [String] -> IO Config
+getConfig = undefined
 
 ---------- in HUnit -----------------
 
@@ -273,6 +283,14 @@ catches io handlers = fold catch (try (\() -> io) ()) handlers
 type Handler a = Throwable -> IO a
 
 -- instance Functor Hander where
+
+-- Todo: in v3.23, getProgName is not implemented yet
+getProgName :: IO String
+getProgName = return ""
+
+-- Todo: in v3.23, getArgs is not implemented yet
+getArgs :: IO [String]
+getArgs = undefined
 
 
 main = hspec $ do
