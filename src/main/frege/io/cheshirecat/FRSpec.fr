@@ -163,16 +163,15 @@ exitFailure :: IO ()
 exitFailure = System.exit 1
 
 data Config = Config
-    { configNested     :: Bool
-    , configFormatter  :: Maybe String
-    , configNoMain     :: Bool
-    , configModuleName :: Maybe Bool
+    { configQuickCheckSeed :: Maybe Integer
     }
 derive Eq   Config
 derive Show Config
 
 defaultConfig :: Config
-defaultConfig = Config false Nothing false Nothing
+defaultConfig = Config
+    { configQuickCheckSeed = Nothing
+    }
 
 data Summary = Summary
     { summaryExamples :: Int
