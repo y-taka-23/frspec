@@ -4,6 +4,7 @@ import frege.control.monad.trans.MonadIO ( MonadIO, liftIO )
 import frege.control.monad.trans.MonadTrans ( MonadTrans, lift )
 import frege.data.Monoid ( Monoid, mappend )
 import frege.java.Lang ( System.exit )
+import frege.system.Random ( newStdGen, randomR )
 
 -- type stubs
 type FilePath = String
@@ -192,7 +193,15 @@ hspecWithResult conf spec = do
     return $ Summary 0 0
 
 ensureSeed :: Config -> IO Config
-ensureSeed = undefined
+ensureSeed c =
+    case c.configQuickCheckSeed of
+        Nothing -> do
+            seed <- newSeed
+            return c.{ configQuickCheckSeed = Just (fromIntegral seed) }
+        Just _ -> return c
+
+newSeed :: IO Int
+newSeed = fst . randomR (0, maxBound :: Int) <$> newStdGen
 
 ---------- in hspec-expectations -----------------
 
