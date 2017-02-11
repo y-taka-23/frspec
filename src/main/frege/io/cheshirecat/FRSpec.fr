@@ -5,7 +5,7 @@ import frege.control.monad.trans.MonadTrans ( MonadTrans, lift )
 import frege.data.Monoid ( Monoid, mappend )
 import frege.java.Lang ( System.exit )
 
--- type stabs
+-- type stubs
 type FilePath = String
 type Args = () -- Defined in QuichCheck
 type Arg e = () -- inner type of Example
@@ -183,6 +183,7 @@ derive Show Summary
 isSuccess :: Summary -> Bool
 isSuccess summary = summary.summaryFailures == 0
 
+-- Todo: stub
 hspecWithResult :: Config -> Spec -> IO Summary
 hspecWithResult conf spec = do
     prog <- getProgName
