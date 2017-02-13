@@ -10,6 +10,7 @@ import frege.system.Random ( newStdGen, randomR )
 type FilePath = String
 type Args = () -- Defined in QuichCheck
 type Arg e = () -- inner type of Example
+type ExitCode = Int
 
 type SpecWith a = SpecM a ()
 
@@ -165,6 +166,7 @@ exitFailure = System.exit 1
 
 data Config = Config
     { configQuickCheckSeed :: Maybe Integer
+    , configReturn         :: Bool
     }
 derive Eq   Config
 derive Show Config
@@ -172,6 +174,7 @@ derive Show Config
 defaultConfig :: Config
 defaultConfig = Config
     { configQuickCheckSeed = Nothing
+    , configReturn         = False
     }
 
 data Summary = Summary
@@ -205,9 +208,43 @@ newSeed :: IO Int
 newSeed = fst . randomR (0, maxBound :: Int) <$> newStdGen
 
 getConfig :: Config -> String -> [String] -> IO (Maybe FailureReport, Config)
-getConfig = undefined
+getConfig opts_ prog args = do
+    configFiles <- do
+        ignore <- ignoreConfigFile opts_ args
+        case ignore of
+            True  -> return []
+            False -> readConfigFiles
+    case parseOptions opts_ prog configFiles args of
+        Left (err, msg) -> exitWithMessage err msg
+        Right opts -> do
+            r <- if opts.configReturn
+                then readFailureReport
+                else return Nothing
+            return (r, mkConfig r opts)
 
 data FailureReport = FailureReport
+
+ignoreConfigFile :: Config -> [String] -> IO Bool
+ignoreConfigFile = undefined
+
+readConfigFiles :: IO [ConfigFile]
+readConfigFiles = undefined
+
+type ConfigFile = (FilePath, [String])
+
+parseOptions ::
+    Config -> String -> [ConfigFile] -> [String] ->
+    Either (ExitCode, String) Config
+parseOptions = undefined
+
+exitWithMessage :: ExitCode -> String -> IO a
+exitWithMessage = undefined
+
+mkConfig :: Maybe FailureReport -> Config -> Config
+mkConfig = undefined
+
+readFailureReport :: IO (Maybe FailureReport)
+readFailureReport = undefined
 
 ---------- in hspec-expectations -----------------
 
