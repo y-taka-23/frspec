@@ -189,7 +189,8 @@ hspecWithResult :: Config -> Spec -> IO Summary
 hspecWithResult conf spec = do
     prog <- getProgName
     args <- getArgs
-    c    <- getConfig conf prog args >>= ensureSeed
+    (oldFailureReport, c_) <- getConfig conf prog args
+    c <- ensureSeed c_
     return $ Summary 0 0
 
 ensureSeed :: Config -> IO Config
@@ -202,6 +203,11 @@ ensureSeed c =
 
 newSeed :: IO Int
 newSeed = fst . randomR (0, maxBound :: Int) <$> newStdGen
+
+getConfig :: Config -> String -> [String] -> IO (Maybe FailureReport, Config)
+getConfig = undefined
+
+data FailureReport = FailureReport
 
 ---------- in hspec-expectations -----------------
 
@@ -221,9 +227,6 @@ expectTrue msg b = unless b (expectationFailure msg)
 --expectationFailure :: (?loc :: CallStack) => String -> Expectation
 expectationFailure :: String -> Expectation
 expectationFailure = assertFailure
-
-getConfig :: Config -> String -> [String] -> IO Config
-getConfig = undefined
 
 ---------- in HUnit -----------------
 
