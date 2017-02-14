@@ -11,6 +11,7 @@ type FilePath = String
 type Args = () -- Defined in QuichCheck
 type Arg e = () -- inner type of Example
 type ExitCode = Int
+type OptDescr e = ()
 
 type SpecWith a = SpecM a ()
 
@@ -165,16 +166,18 @@ exitFailure :: IO ()
 exitFailure = System.exit 1
 
 data Config = Config
-    { configQuickCheckSeed :: Maybe Integer
-    , configReturn         :: Bool
+    { configQuickCheckSeed   :: Maybe Integer
+    , configReturn           :: Bool
+    , configIgnoreConfigFile :: Bool
     }
 derive Eq   Config
 derive Show Config
 
 defaultConfig :: Config
 defaultConfig = Config
-    { configQuickCheckSeed = Nothing
-    , configReturn         = False
+    { configQuickCheckSeed   = Nothing
+    , configReturn           = False
+    , configIgnoreConfigFile = False
     }
 
 data Summary = Summary
@@ -225,7 +228,22 @@ getConfig opts_ prog args = do
 data FailureReport = FailureReport
 
 ignoreConfigFile :: Config -> [String] -> IO Bool
-ignoreConfigFile = undefined
+ignoreConfigFile config args = do
+    ignore <- lookupEnv "IGNORE_DOT_HSPEC"
+    case ignore of
+        Just _  -> return True
+        Nothing -> do
+            case parse recognizedOptions config args of
+                Right (Just c) -> return c.configIgnoreConfigFile
+                Left  _        -> return False
+
+recognizedOptions :: [OptDescr (Result Maybe -> Result Maybe)]
+recognizedOptions = undefined
+
+parse :: (Monad m) =>
+    [OptDescr (Result m -> Result m)] -> Config -> [String] ->
+    Either String (m Config)
+parse = undefined
 
 readConfigFiles :: IO [ConfigFile]
 readConfigFiles = undefined
@@ -340,6 +358,9 @@ getProgName = return ""
 -- Todo: in v3.23, getArgs is not implemented yet
 getArgs :: IO [String]
 getArgs = undefined
+
+lookupEnv :: String -> IO (Maybe String)
+lookupEnv = undefined
 
 
 main = hspec $ do
