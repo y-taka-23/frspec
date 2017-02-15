@@ -246,7 +246,16 @@ parse :: (Monad m) =>
 parse = undefined
 
 readConfigFiles :: IO [ConfigFile]
-readConfigFiles = undefined
+readConfigFiles = do
+    global <- readGlobalConfigFile
+    local  <- readLocalConfigFile
+    return $ catMaybes [global, local]
+
+readGlobalConfigFile :: IO (Maybe ConfigFile)
+readGlobalConfigFile = undefined
+
+readLocalConfigFile :: IO (Maybe ConfigFile)
+readLocalConfigFile = undefined
 
 type ConfigFile = (FilePath, [String])
 
