@@ -257,6 +257,9 @@ readGlobalConfigFile = undefined
 readLocalConfigFile :: IO (Maybe ConfigFile)
 readLocalConfigFile = undefined
 
+readConfigFile :: FilePath -> IO (ConfigFile)
+readConfigFile = undefined
+
 type ConfigFile = (FilePath, [String])
 
 parseOptions ::
@@ -370,6 +373,9 @@ getArgs = undefined
 
 lookupEnv :: String -> IO (Maybe String)
 lookupEnv = undefined
+
+getHomeDirectory :: IO FilePath
+getHomeDirectory = undefined
 
 
 main = hspec $ do
