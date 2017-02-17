@@ -252,12 +252,15 @@ readConfigFiles = do
     return $ catMaybes [global, local]
 
 readGlobalConfigFile :: IO (Maybe ConfigFile)
-readGlobalConfigFile = undefined
+readGlobalConfigFile = do
+    case System.getProperty "user.home" of
+        Nothing   -> return Nothing
+        Just home -> readConfigFile (home </> ".hspec")
 
 readLocalConfigFile :: IO (Maybe ConfigFile)
 readLocalConfigFile = undefined
 
-readConfigFile :: FilePath -> IO (ConfigFile)
+readConfigFile :: FilePath -> IO (Maybe ConfigFile)
 readConfigFile = undefined
 
 type ConfigFile = (FilePath, [String])
@@ -374,8 +377,10 @@ getArgs = undefined
 lookupEnv :: String -> IO (Maybe String)
 lookupEnv = undefined
 
-getHomeDirectory :: IO FilePath
-getHomeDirectory = undefined
+--Todo: in v3.23, File.separator is not implemented yet
+(</>) :: FilePath -> FilePath -> FilePath
+(</>) p1 p2 = p1 ++ "/" ++ p2
+infix 5 </>
 
 
 main = hspec $ do
