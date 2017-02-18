@@ -258,7 +258,11 @@ readGlobalConfigFile = do
         Just home -> readConfigFile (home </> ".hspec")
 
 readLocalConfigFile :: IO (Maybe ConfigFile)
-readLocalConfigFile = undefined
+readLocalConfigFile = do
+    mName <- canonicalizePath ".hspec"
+    case mName of
+        Nothing   -> return Nothing
+        Just name -> readConfigFile name
 
 readConfigFile :: FilePath -> IO (Maybe ConfigFile)
 readConfigFile = undefined
@@ -381,6 +385,9 @@ lookupEnv = undefined
 (</>) :: FilePath -> FilePath -> FilePath
 (</>) p1 p2 = p1 ++ "/" ++ p2
 infix 5 </>
+
+canonicalizePath :: FilePath -> IO (Maybe FilePath)
+canonicalizePath = undefined
 
 
 main = hspec $ do
