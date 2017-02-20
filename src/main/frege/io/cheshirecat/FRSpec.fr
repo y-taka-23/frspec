@@ -265,7 +265,11 @@ readLocalConfigFile = do
         Just name -> readConfigFile name
 
 readConfigFile :: FilePath -> IO (Maybe ConfigFile)
-readConfigFile = undefined
+readConfigFile name = do
+    exists <- doesFileExist name
+    if exists
+        then Just . (,) name . words <$> readFile name
+        else return Nothing
 
 type ConfigFile = (FilePath, [String])
 
@@ -388,6 +392,9 @@ infix 5 </>
 
 canonicalizePath :: FilePath -> IO (Maybe FilePath)
 canonicalizePath = undefined
+
+doesFileExist :: FilePath -> IO Bool
+doesFileExist = undefined
 
 
 main = hspec $ do
