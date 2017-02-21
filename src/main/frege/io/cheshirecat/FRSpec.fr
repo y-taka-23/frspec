@@ -394,7 +394,7 @@ canonicalizePath :: FilePath -> IO (Maybe FilePath)
 canonicalizePath = undefined
 
 doesFileExist :: FilePath -> IO Bool
-doesFileExist = undefined
+doesFileExist name = File.new name >>= _.exists
 
 
 main = hspec $ do
