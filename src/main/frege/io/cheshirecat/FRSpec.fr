@@ -166,18 +166,20 @@ exitFailure :: IO ()
 exitFailure = System.exit 1
 
 data Config = Config
-    { configQuickCheckSeed   :: Maybe Integer
-    , configReturn           :: Bool
-    , configIgnoreConfigFile :: Bool
+    { configQuickCheckSeed    :: Maybe Integer
+    , configReturn            :: Bool
+    , configRerunAllOnSuccess :: Bool
+    , configIgnoreConfigFile  :: Bool
     }
 derive Eq   Config
 derive Show Config
 
 defaultConfig :: Config
 defaultConfig = Config
-    { configQuickCheckSeed   = Nothing
-    , configReturn           = False
-    , configIgnoreConfigFile = False
+    { configQuickCheckSeed    = Nothing
+    , configReturn            = False
+    , configRerunAllOnSuccess = False
+    , configIgnoreConfigFile  = False
     }
 
 data Summary = Summary
