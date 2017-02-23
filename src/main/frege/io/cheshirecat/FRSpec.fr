@@ -192,14 +192,25 @@ derive Show Summary
 isSuccess :: Summary -> Bool
 isSuccess summary = summary.summaryFailures == 0
 
--- Todo: stub
 hspecWithResult :: Config -> Spec -> IO Summary
-hspecWithResult conf spec = do
+hspecWithResult config spec = do
     prog <- getProgName
     args <- getArgs
-    (oldFailureReport, c_) <- getConfig conf prog args
+    (oldFailureReport, c_) <- getConfig config prog args
     c <- ensureSeed c_
-    return $ Summary 0 0
+    if c.configRerunAllOnSuccess
+        then do
+            summary <- runSpec c spec
+            if rerunAll c oldFailureReport summary
+                then hspecWithResult config spec
+                else return summary
+        else runSpec c spec
+
+runSpec :: Config -> Spec -> IO Summary
+runSpec = undefined
+
+rerunAll :: Config -> Maybe FailureReport -> Summary -> Bool
+rerunAll = undefined
 
 ensureSeed :: Config -> IO Config
 ensureSeed c =
