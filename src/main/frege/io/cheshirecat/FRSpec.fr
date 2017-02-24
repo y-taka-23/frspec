@@ -298,7 +298,13 @@ mkConfig :: Maybe FailureReport -> Config -> Config
 mkConfig = undefined
 
 readFailureReport :: IO (Maybe FailureReport)
-readFailureReport = undefined
+readFailureReport = do
+    mx <- lookupEnv "HSPEC_FAILURES"
+    case mx >>= readMaybe of
+        Nothing -> do
+            stderr.println "WARNING: Could not read environment variable HSPEC_FAILURES; `--rerun' is ignored!'"
+            return Nothing
+        x -> return x
 
 ---------- in hspec-expectations -----------------
 
@@ -408,6 +414,11 @@ canonicalizePath = undefined
 
 doesFileExist :: FilePath -> IO Bool
 doesFileExist name = File.new name >>= _.exists
+
+-- Todo: The Read typeclass is not implemented
+--readMaybe :: (Read a) => String -> Maybe a
+readMaybe :: String -> Maybe a
+readMaybe = undefined
 
 
 main = hspec $ do
