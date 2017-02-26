@@ -167,7 +167,7 @@ exitFailure = System.exit 1
 
 data Config = Config
     { configQuickCheckSeed    :: Maybe Integer
-    , configReturn            :: Bool
+    , configRerun             :: Bool
     , configRerunAllOnSuccess :: Bool
     , configIgnoreConfigFile  :: Bool
     }
@@ -177,7 +177,7 @@ derive Show Config
 defaultConfig :: Config
 defaultConfig = Config
     { configQuickCheckSeed    = Nothing
-    , configReturn            = False
+    , configRerun             = False
     , configRerunAllOnSuccess = False
     , configIgnoreConfigFile  = False
     }
@@ -233,7 +233,7 @@ getConfig opts_ prog args = do
     case parseOptions opts_ prog configFiles args of
         Left (err, msg) -> exitWithMessage err msg
         Right opts -> do
-            r <- if opts.configReturn
+            r <- if opts.configRerun
                 then readFailureReport
                 else return Nothing
             return (r, mkConfig r opts)
