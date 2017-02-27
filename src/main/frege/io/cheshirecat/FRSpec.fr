@@ -210,7 +210,12 @@ runSpec :: Config -> Spec -> IO Summary
 runSpec = undefined
 
 rerunAll :: Config -> Maybe FailureReport -> Summary -> Bool
-rerunAll = undefined
+rerunAll _      Nothing                 _       = false
+rerunAll config (Just oldFailureReport) summary =
+    config.configRerunAllOnSuccess
+        && config.configRerun
+        && isSuccess summary
+        && (not . null) oldFailureReport.failureReportPaths
 
 ensureSeed :: Config -> IO Config
 ensureSeed c =
