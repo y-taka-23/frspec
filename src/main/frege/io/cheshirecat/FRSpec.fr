@@ -238,7 +238,11 @@ getConfig opts_ prog args = do
                 else return Nothing
             return (r, mkConfig r opts)
 
+type Path = (String, [String])
+
 data FailureReport = FailureReport
+    { failureReportPaths :: [Path]
+    }
 
 ignoreConfigFile :: Config -> [String] -> IO Bool
 ignoreConfigFile config args = do
