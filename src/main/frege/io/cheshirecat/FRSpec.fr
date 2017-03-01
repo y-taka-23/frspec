@@ -308,8 +308,26 @@ parseOptions = undefined
 exitWithMessage :: ExitCode -> String -> IO a
 exitWithMessage = undefined
 
+-- stub
 mkConfig :: Maybe FailureReport -> Config -> Config
-mkConfig = undefined
+mkConfig mFailureReport opts = opts.{
+      configFilterPredicate           = matchFilter `filterOr` rerunFilter
+    , configQuickCheckSeed            = mSeed
+    , configQuickCheckMaxSuccess      = mMaxSuccess
+    , configQuickCheckMaxDiscardRatio = mMaxDiscardRatio
+    , configQuickCheckMaxSize         = mMaxSize
+    }
+    where
+        matchFilter      = undefined
+        rerunFilter      = undefined
+        mSeed            = undefined
+        mMaxSuccess      = undefined
+        mMaxDiscardRatio = undefined
+        mMaxSize         = undefined
+
+filterOr ::
+    Maybe (Path -> Bool) -> Maybe (Path -> Bool) -> Maybe (Path -> Bool)
+filterOr = undefined
 
 readFailureReport :: IO (Maybe FailureReport)
 readFailureReport = do
