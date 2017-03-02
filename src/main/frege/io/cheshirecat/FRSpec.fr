@@ -318,8 +318,11 @@ mkConfig mFailureReport opts = opts.{
     , configQuickCheckMaxSize         = mMaxSize
     }
     where
-        matchFilter      = undefined
-        rerunFilter      = undefined
+        matchFilter = opts.configFilterPredicate
+        rerunFilter = case _.failureReportPaths <$> mFailureReport of
+            Nothing -> Nothing
+            Just [] -> Nothing
+            Just xs -> Just (`elem` xs)
         mSeed            = undefined
         mMaxSuccess      = undefined
         mMaxDiscardRatio = undefined
