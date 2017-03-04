@@ -253,6 +253,7 @@ type Path = (String, [String])
 
 data FailureReport = FailureReport
     { failureReportPaths :: [Path]
+    , failureReportSeed  :: Integer
     }
 
 ignoreConfigFile :: Config -> [String] -> IO Bool
@@ -323,7 +324,7 @@ mkConfig mFailureReport opts = opts.{
             Nothing -> Nothing
             Just [] -> Nothing
             Just xs -> Just (`elem` xs)
-        mSeed            = undefined
+        mSeed = opts.configQuickCheckSeed <|> (_.failureReportSeed <$> mFailureReport)
         mMaxSuccess      = undefined
         mMaxDiscardRatio = undefined
         mMaxSize         = undefined
@@ -451,6 +452,10 @@ doesFileExist name = File.new name >>= _.exists
 readMaybe :: String -> Maybe a
 readMaybe = undefined
 
+-- Todo: somewhy Maybe is not an instance of Alt
+instance Alt Maybe where
+    (<|>) Nothing  mY = mY
+    (<|>) (Just x) _  = Just x
 
 main = hspec $ do
     describe "Prelude.head" $ do
