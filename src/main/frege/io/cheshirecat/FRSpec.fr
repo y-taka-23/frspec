@@ -252,9 +252,10 @@ getConfig opts_ prog args = do
 type Path = (String, [String])
 
 data FailureReport = FailureReport
-    { failureReportPaths      :: [Path]
-    , failureReportSeed       :: Integer
-    , failureReportMaxSuccess :: Int
+    { failureReportPaths           :: [Path]
+    , failureReportSeed            :: Integer
+    , failureReportMaxSuccess      :: Int
+    , failureReportMaxDiscardRatio :: Int
     }
 
 ignoreConfigFile :: Config -> [String] -> IO Bool
@@ -327,7 +328,7 @@ mkConfig mFailureReport opts = opts.{
             Just xs -> Just (`elem` xs)
         mSeed = opts.configQuickCheckSeed <|> (_.failureReportSeed <$> mFailureReport)
         mMaxSuccess = opts.configQuickCheckMaxSuccess <|> (_.failureReportMaxSuccess <$> mFailureReport)
-        mMaxDiscardRatio = undefined
+        mMaxDiscardRatio = opts.configQuickCheckMaxDiscardRatio <|> (_.failureReportMaxDiscardRatio <$> mFailureReport)
         mMaxSize         = undefined
 
 filterOr ::
