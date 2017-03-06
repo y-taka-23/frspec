@@ -256,6 +256,7 @@ data FailureReport = FailureReport
     , failureReportSeed            :: Integer
     , failureReportMaxSuccess      :: Int
     , failureReportMaxDiscardRatio :: Int
+    , failureReportMaxSize         :: Int
     }
 
 ignoreConfigFile :: Config -> [String] -> IO Bool
@@ -311,7 +312,6 @@ parseOptions = undefined
 exitWithMessage :: ExitCode -> String -> IO a
 exitWithMessage = undefined
 
--- stub
 mkConfig :: Maybe FailureReport -> Config -> Config
 mkConfig mFailureReport opts = opts.{
       configFilterPredicate           = matchFilter `filterOr` rerunFilter
@@ -329,7 +329,7 @@ mkConfig mFailureReport opts = opts.{
         mSeed = opts.configQuickCheckSeed <|> (_.failureReportSeed <$> mFailureReport)
         mMaxSuccess = opts.configQuickCheckMaxSuccess <|> (_.failureReportMaxSuccess <$> mFailureReport)
         mMaxDiscardRatio = opts.configQuickCheckMaxDiscardRatio <|> (_.failureReportMaxDiscardRatio <$> mFailureReport)
-        mMaxSize         = undefined
+        mMaxSize = opts.configQuickCheckMaxSize <|> (_.failureReportMaxSize <$> mFailureReport)
 
 filterOr ::
     Maybe (Path -> Bool) -> Maybe (Path -> Bool) -> Maybe (Path -> Bool)
