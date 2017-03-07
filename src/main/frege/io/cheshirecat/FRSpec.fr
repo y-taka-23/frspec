@@ -326,7 +326,8 @@ mkConfig mFailureReport opts = opts.{
             Nothing -> Nothing
             Just [] -> Nothing
             Just xs -> Just (`elem` xs)
-        mSeed = opts.configQuickCheckSeed <|> (_.failureReportSeed <$> mFailureReport)
+        mSeed = opts.configQuickCheckSeed <|>
+            (_.failureReportSeed <$> mFailureReport)
         mMaxSuccess = opts.configQuickCheckMaxSuccess <|> (_.failureReportMaxSuccess <$> mFailureReport)
         mMaxDiscardRatio = opts.configQuickCheckMaxDiscardRatio <|> (_.failureReportMaxDiscardRatio <$> mFailureReport)
         mMaxSize = opts.configQuickCheckMaxSize <|> (_.failureReportMaxSize <$> mFailureReport)
