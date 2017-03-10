@@ -330,7 +330,8 @@ mkConfig mFailureReport opts = opts.{
             (_.failureReportSeed <$> mFailureReport)
         mMaxSuccess = opts.configQuickCheckMaxSuccess <|>
             (_.failureReportMaxSuccess <$> mFailureReport)
-        mMaxDiscardRatio = opts.configQuickCheckMaxDiscardRatio <|> (_.failureReportMaxDiscardRatio <$> mFailureReport)
+        mMaxDiscardRatio = opts.configQuickCheckMaxDiscardRatio <|>
+            (_.failureReportMaxDiscardRatio <$> mFailureReport)
         mMaxSize = opts.configQuickCheckMaxSize <|> (_.failureReportMaxSize <$> mFailureReport)
 
 filterOr ::
