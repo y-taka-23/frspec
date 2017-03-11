@@ -266,6 +266,7 @@ ignoreConfigFile config args = do
         Nothing -> do
             case parse recognizedOptions config args of
                 Right (Just c) -> return c.configIgnoreConfigFile
+                Right Nothing  -> return False
                 Left  _        -> return False
 
 recognizedOptions :: [OptDescr (Result Maybe -> Result Maybe)]
