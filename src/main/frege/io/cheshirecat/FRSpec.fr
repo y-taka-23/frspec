@@ -270,7 +270,13 @@ ignoreConfigFile config args = do
                 Left  _        -> return False
 
 recognizedOptions :: [OptDescr (Result Maybe -> Result Maybe)]
-recognizedOptions = undefined
+recognizedOptions = documentedOptions ++ undocumentedOptions
+
+documentedOptions :: [OptDescr (Result Maybe -> Result Maybe)]
+documentedOptions = undefined
+
+undocumentedOptions :: [OptDescr (Result Maybe -> Result Maybe)]
+undocumentedOptions = undefined
 
 parse :: (Monad m) =>
     [OptDescr (Result m -> Result m)] -> Config -> [String] ->
