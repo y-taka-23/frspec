@@ -273,7 +273,13 @@ recognizedOptions :: [OptDescr (Result Maybe -> Result Maybe)]
 recognizedOptions = documentedOptions ++ undocumentedOptions
 
 documentedOptions :: [OptDescr (Result Maybe -> Result Maybe)]
-documentedOptions = undefined
+documentedOptions = commandLineOptions ++ configFileOptions
+
+commandLineOptions :: [OptDescr (Result Maybe -> Result Maybe)]
+commandLineOptions = undefined
+
+configFileOptions :: [OptDescr (Result Maybe -> Result Maybe)]
+configFileOptions = undefined
 
 undocumentedOptions :: [OptDescr (Result Maybe -> Result Maybe)]
 undocumentedOptions = undefined
