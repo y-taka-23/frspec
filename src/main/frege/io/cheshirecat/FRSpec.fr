@@ -11,7 +11,6 @@ type FilePath = String
 type Args = () -- Defined in QuichCheck
 type Arg e = () -- inner type of Example
 type ExitCode = Int
-type OptDescr e = ()
 
 type SpecWith a = SpecM a ()
 
@@ -269,23 +268,28 @@ ignoreConfigFile config args = do
                 Right Nothing  -> return False
                 Left  _        -> return False
 
-recognizedOptions :: [OptDescr (Result Maybe -> Result Maybe)]
+-- Todo: originally Test.Hspec.Core.Options.Result
+type OptResult m = Either InvalidArgument (m Config)
+
+data InvalidArgument = InvalidArgument String String
+
+recognizedOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 recognizedOptions = documentedOptions ++ undocumentedOptions
 
-documentedOptions :: [OptDescr (Result Maybe -> Result Maybe)]
+documentedOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 documentedOptions = commandLineOptions ++ configFileOptions
 
-commandLineOptions :: [OptDescr (Result Maybe -> Result Maybe)]
+commandLineOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 commandLineOptions = undefined
 
-configFileOptions :: [OptDescr (Result Maybe -> Result Maybe)]
+configFileOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 configFileOptions = undefined
 
-undocumentedOptions :: [OptDescr (Result Maybe -> Result Maybe)]
+undocumentedOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 undocumentedOptions = undefined
 
 parse :: (Monad m) =>
-    [OptDescr (Result m -> Result m)] -> Config -> [String] ->
+    [OptDescr (OptResult m -> OptResult m)] -> Config -> [String] ->
     Either String (m Config)
 parse = undefined
 
@@ -470,6 +474,15 @@ doesFileExist name = File.new name >>= _.exists
 --readMaybe :: (Read a) => String -> Maybe a
 readMaybe :: String -> Maybe a
 readMaybe = undefined
+
+data OptDescr a = Option [Char] [String] (ArgDescr a) String
+-- instance Functor OptDescr where
+
+data ArgDescr a =
+      NoArg  a
+    | ReqArg (String -> a)       String
+    | OptArg (Maybe String -> a) String
+-- instance Functor ArgDescr where
 
 -- Todo: somewhy Maybe is not an instance of Alt
 instance Alt Maybe where
