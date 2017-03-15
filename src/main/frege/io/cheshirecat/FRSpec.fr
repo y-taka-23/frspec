@@ -279,6 +279,15 @@ recognizedOptions = documentedOptions ++ undocumentedOptions
 documentedOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 documentedOptions = commandLineOptions ++ configFileOptions
 
+lineBreakAt :: Int -> String -> [String]
+lineBreakAt = undefined
+
+addLineBreaks :: String -> [String]
+addLineBreaks = lineBreakAt 40
+
+h :: String -> String
+h = unlines . addLineBreaks
+
 commandLineOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 commandLineOptions = undefined
 
