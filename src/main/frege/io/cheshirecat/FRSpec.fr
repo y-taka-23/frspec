@@ -280,7 +280,17 @@ documentedOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 documentedOptions = commandLineOptions ++ configFileOptions
 
 lineBreakAt :: Int -> String -> [String]
-lineBreakAt = undefined
+lineBreakAt n input = case words input of
+    []       -> []
+    (x : xs) -> go (x, xs)
+        where
+            go :: (String, [String]) -> [String]
+            go c = case c of
+                (s, []    ) -> [s]
+                (s, y : ys) -> let r = s ++ " " ++ y in
+                    if length r <= n
+                        then go (r, ys)
+                        else s : go (y, ys)
 
 addLineBreaks :: String -> [String]
 addLineBreaks = lineBreakAt 40
