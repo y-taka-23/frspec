@@ -298,8 +298,21 @@ addLineBreaks = lineBreakAt 40
 h :: String -> String
 h = unlines . addLineBreaks
 
+set :: (Monad m) =>
+    (Config -> Config) -> Either a (m Config) -> Either a (m Config)
+set = undefined
+
+-- Todo: stub
 commandLineOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
-commandLineOptions = undefined
+commandLineOptions = [
+      Option   []  ["help"]             (NoArg (const $ Right Nothing)) (h "display this help and exit")
+    , Option   []  ["ignore-dot-hspec"] (NoArg setIgnoreConfigFile)     (h "do not read options from ~/.hspec and .hspec")
+--    , mkOption "m"  "match"             (Arg "PATTERN" return addMatch) (h "only run examples that match given PATTERN")
+--    , mkOption []   "skip"              (Arg "PATTERN" return addSkip)  (h "skip examples that match given PATTERN")
+    ]
+    where
+        setIgnoreConfigFile =
+            set $ \config -> config.{ configIgnoreConfigFile = true }
 
 configFileOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 configFileOptions = undefined
