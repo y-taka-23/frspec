@@ -302,6 +302,13 @@ set :: (Monad m) =>
     (Config -> Config) -> Either a (m Config) -> Either a (m Config)
 set = undefined
 
+-- Todo: originally Test.Hspec.Core.Options.Arg
+data OptArg a = OprArg {
+      argumentName   :: String
+    , argumentParser :: String -> Maybe a
+    , argumentSetter :: a -> Config -> Config
+    }
+
 mkOption :: (Monad m) =>
     [Char] -> String -> Arg a -> String -> OptDescr (OptResult m -> OptResult m)
 mkOption = undefined
