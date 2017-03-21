@@ -310,7 +310,7 @@ data OptArg a = OprArg {
     }
 
 mkOption :: (Monad m) =>
-    [Char] -> String -> Arg a -> String -> OptDescr (OptResult m -> OptResult m)
+    [Char] -> String -> OptArg a -> String -> OptDescr (OptResult m -> OptResult m)
 mkOption = undefined
 
 -- Todo: stub
