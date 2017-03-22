@@ -311,7 +311,12 @@ data OptionArg a = OptionArg {
 
 mkOption :: (Monad m) =>
     [Char] -> String -> OptionArg a -> String -> OptDescr (OptResult m -> OptResult m)
-mkOption = undefined
+mkOption shortcut name (OptionArg argName parser setter) help =
+    Option shortcut [name] (ReqArg arg argName) help
+        where
+            arg input x = x >>= \c -> case parser input of
+                Just n  -> Right (setter n `liftM` c)
+                Nothing -> Left  (InvalidArgument name input)
 
 -- Todo: stub
 commandLineOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
