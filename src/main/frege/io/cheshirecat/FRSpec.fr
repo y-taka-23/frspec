@@ -173,6 +173,7 @@ data Config = Config
     , configRerunAllOnSuccess         :: Bool
     , configIgnoreConfigFile          :: Bool
     , configFilterPredicate           :: Maybe (Path -> Bool)
+    , configSkipPredicate             :: Maybe (Path -> Bool)
     }
 
 defaultConfig :: Config
@@ -185,6 +186,7 @@ defaultConfig = Config
     , configRerunAllOnSuccess         = False
     , configIgnoreConfigFile          = False
     , configFilterPredicate           = Nothing
+    , configSkipPredicate             = Nothing
     }
 
 data Summary = Summary
