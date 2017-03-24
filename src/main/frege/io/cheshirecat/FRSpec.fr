@@ -320,6 +320,13 @@ mkOption shortcut name (OptionArg argName parser setter) help =
                 Just n  -> Right (setter n `liftM` c)
                 Nothing -> Left  (InvalidArgument name input)
 
+filterPredicate :: String -> Path -> Bool
+filterPredicate = undefined
+
+addMatch :: String -> Config -> Config
+addMatch s c = c.{ configFilterPredicate =
+        Just (filterPredicate s) `filterOr` c.configFilterPredicate }
+
 -- Todo: stub
 commandLineOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 commandLineOptions = [
