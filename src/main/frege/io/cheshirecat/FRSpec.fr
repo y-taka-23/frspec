@@ -327,6 +327,10 @@ addMatch :: String -> Config -> Config
 addMatch s c = c.{ configFilterPredicate =
         Just (filterPredicate s) `filterOr` c.configFilterPredicate }
 
+addSkip :: String -> Config -> Config
+addSkip s c = c.{ configSkipPredicate =
+    Just (filterPredicate s) `filterOr` c.configSkipPredicate }
+
 -- Todo: stub
 commandLineOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 commandLineOptions = [
