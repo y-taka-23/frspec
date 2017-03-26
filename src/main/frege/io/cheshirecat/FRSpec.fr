@@ -331,13 +331,12 @@ addSkip :: String -> Config -> Config
 addSkip s c = c.{ configSkipPredicate =
     Just (filterPredicate s) `filterOr` c.configSkipPredicate }
 
--- Todo: stub
 commandLineOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 commandLineOptions = [
       Option   []  ["help"]             (NoArg (const $ Right Nothing)) (h "display this help and exit")
     , Option   []  ["ignore-dot-hspec"] (NoArg setIgnoreConfigFile)     (h "do not read options from ~/.hspec and .hspec")
---    , mkOption "m"  "match"             (Arg "PATTERN" return addMatch) (h "only run examples that match given PATTERN")
---    , mkOption []   "skip"              (Arg "PATTERN" return addSkip)  (h "skip examples that match given PATTERN")
+    , mkOption ['m']  "match"             (OptionArg "PATTERN" return addMatch) (h "only run examples that match given PATTERN")
+    , mkOption []   "skip"              (OptionArg "PATTERN" return addSkip)  (h "skip examples that match given PATTERN")
     ]
     where
         setIgnoreConfigFile =
