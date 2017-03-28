@@ -2,6 +2,7 @@ module io.cheshirecat.FRSpec where
 
 import frege.control.monad.trans.MonadIO ( MonadIO, liftIO )
 import frege.control.monad.trans.MonadTrans ( MonadTrans, lift )
+import frege.data.List ( intercalate )
 import frege.data.Monoid ( Monoid, mappend )
 import frege.java.Lang ( System.exit )
 import frege.system.Random ( newStdGen, randomR )
@@ -321,7 +322,15 @@ mkOption shortcut name (OptionArg argName parser setter) help =
                 Nothing -> Left  (InvalidArgument name input)
 
 filterPredicate :: String -> Path -> Bool
-filterPredicate = undefined
+filterPredicate pattern (groups, requirement) =
+    pattern `isInfixOf` plain     ||
+    pattern `isInfixOf` formatted
+        where
+            plain     = intercalate "/" (groups ++ [requirement])
+            formatted = formatRequirement (groups, requirement)
+
+formatRequirement :: Path -> String
+formatRequirement = undefined
 
 addMatch :: String -> Config -> Config
 addMatch s c = c.{ configFilterPredicate =
@@ -548,6 +557,10 @@ data ArgDescr a =
 instance Alt Maybe where
     (<|>) Nothing  mY = mY
     (<|>) (Just x) _  = Just x
+
+-- frege.data.List.isInfixOf is only for [a]
+isInfixOf :: String -> String -> Bool
+isInfixOf = undefined
 
 main = hspec $ do
     describe "Prelude.head" $ do
