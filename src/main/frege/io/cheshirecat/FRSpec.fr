@@ -342,10 +342,10 @@ addSkip s c = c.{ configSkipPredicate =
 
 commandLineOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 commandLineOptions = [
-      Option   []  ["help"]             (NoArg (const $ Right Nothing)) (h "display this help and exit")
-    , Option   []  ["ignore-dot-hspec"] (NoArg setIgnoreConfigFile)     (h "do not read options from ~/.hspec and .hspec")
-    , mkOption ['m']  "match"             (OptionArg "PATTERN" return addMatch) (h "only run examples that match given PATTERN")
-    , mkOption []   "skip"              (OptionArg "PATTERN" return addSkip)  (h "skip examples that match given PATTERN")
+      Option   []    ["help"]             (NoArg (const $ Right Nothing))       (h "display this help and exit")
+    , Option   []    ["ignore-dot-hspec"] (NoArg setIgnoreConfigFile)           (h "do not read options from ~/.hspec and .hspec")
+    , mkOption ['m'] "match"              (OptionArg "PATTERN" return addMatch) (h "only run examples that match given PATTERN")
+    , mkOption []    "skip"               (OptionArg "PATTERN" return addSkip)  (h "skip examples that match given PATTERN")
     ]
     where
         setIgnoreConfigFile =
