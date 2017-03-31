@@ -329,8 +329,14 @@ filterPredicate pattern (groups, requirement) =
             plain     = intercalate "/" (groups ++ [requirement])
             formatted = formatRequirement (groups, requirement)
 
+-- stub
 formatRequirement :: Path -> String
-formatRequirement = undefined
+formatRequirement (groups, requirement) = groups_ ++ requirement
+    where
+        groups_ = undefined
+        join xs = case xs of
+            [x]  -> x ++ " "
+            ys   -> concatMap (++ ", ") ys
 
 addMatch :: String -> Config -> Config
 addMatch s c = c.{ configFilterPredicate =
