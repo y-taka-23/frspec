@@ -434,7 +434,9 @@ mkConfig mFailureReport opts = opts.{
 
 filterOr ::
     Maybe (Path -> Bool) -> Maybe (Path -> Bool) -> Maybe (Path -> Bool)
-filterOr = undefined
+filterOr mP1 mP2 = case (mP1, mP2) of
+    (Just p1, Just p2) -> Just $ \path -> p1 path || p2 path
+    _                  -> mP1 <|> mP2
 
 readFailureReport :: IO (Maybe FailureReport)
 readFailureReport = do
