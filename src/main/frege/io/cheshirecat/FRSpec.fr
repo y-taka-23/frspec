@@ -362,6 +362,8 @@ commandLineOptions = [
         setIgnoreConfigFile =
             set $ \config -> config.{ configIgnoreConfigFile = true }
 
+data ColorMode = ColorAuto | ColorNever | ColorAlways
+
 configFileOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 configFileOptions = undefined
 
