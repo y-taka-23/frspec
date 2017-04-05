@@ -175,6 +175,7 @@ data Config = Config
     , configIgnoreConfigFile          :: Bool
     , configFilterPredicate           :: Maybe (Path -> Bool)
     , configSkipPredicate             :: Maybe (Path -> Bool)
+    , configColorMode                 :: ColorMode
     }
 
 defaultConfig :: Config
@@ -188,6 +189,7 @@ defaultConfig = Config
     , configIgnoreConfigFile          = False
     , configFilterPredicate           = Nothing
     , configSkipPredicate             = Nothing
+    , configColorMode                 = ColorAuto
     }
 
 data Summary = Summary
@@ -364,8 +366,13 @@ commandLineOptions = [
 
 data ColorMode = ColorAuto | ColorNever | ColorAlways
 
+-- stub
 configFileOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
-configFileOptions = undefined
+configFileOptions = [
+      Option   []  ["color"]            (NoArg setColor)                    (h "colorize the output")
+    ]
+    where
+        setColor = set $ \config -> config.{ configColorMode = ColorAlways }
 
 undocumentedOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 undocumentedOptions = undefined
