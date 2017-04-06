@@ -370,9 +370,11 @@ data ColorMode = ColorAuto | ColorNever | ColorAlways
 configFileOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 configFileOptions = [
       Option   []  ["color"]            (NoArg setColor)                    (h "colorize the output")
+    , Option   []  ["no-color"]         (NoArg setNoColor)                  (h "do not colorize the output")
     ]
     where
-        setColor = set $ \config -> config.{ configColorMode = ColorAlways }
+        setColor   = set $ \config -> config.{ configColorMode = ColorAlways }
+        setNoColor = set $ \config -> config.{ configColorMode = ColorNever }
 
 undocumentedOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 undocumentedOptions = undefined
