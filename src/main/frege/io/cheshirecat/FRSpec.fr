@@ -176,6 +176,7 @@ data Config = Config
     , configFilterPredicate           :: Maybe (Path -> Bool)
     , configSkipPredicate             :: Maybe (Path -> Bool)
     , configColorMode                 :: ColorMode
+    , configDiff                      :: Bool
     }
 
 defaultConfig :: Config
@@ -190,6 +191,7 @@ defaultConfig = Config
     , configFilterPredicate           = Nothing
     , configSkipPredicate             = Nothing
     , configColorMode                 = ColorAuto
+    , configDiff                      = True
     }
 
 data Summary = Summary
@@ -371,10 +373,12 @@ configFileOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 configFileOptions = [
       Option   []  ["color"]            (NoArg setColor)                    (h "colorize the output")
     , Option   []  ["no-color"]         (NoArg setNoColor)                  (h "do not colorize the output")
+    , Option   []  ["diff"]             (NoArg setDiff)                     (h "show colorized diffs")
     ]
     where
         setColor   = set $ \config -> config.{ configColorMode = ColorAlways }
         setNoColor = set $ \config -> config.{ configColorMode = ColorNever }
+        setDiff    = set $ \config -> config.{ configDiff = True }
 
 undocumentedOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 undocumentedOptions = undefined
