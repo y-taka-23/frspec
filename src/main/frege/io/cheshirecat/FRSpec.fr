@@ -374,11 +374,13 @@ configFileOptions = [
       Option   []  ["color"]            (NoArg setColor)                    (h "colorize the output")
     , Option   []  ["no-color"]         (NoArg setNoColor)                  (h "do not colorize the output")
     , Option   []  ["diff"]             (NoArg setDiff)                     (h "show colorized diffs")
+    , Option   []  ["no-diff"]          (NoArg setNoDiff)                   (h "do not show colorized diffs")
     ]
     where
         setColor   = set $ \config -> config.{ configColorMode = ColorAlways }
         setNoColor = set $ \config -> config.{ configColorMode = ColorNever }
         setDiff    = set $ \config -> config.{ configDiff = True }
+        setNoDiff  = set $ \config -> config.{ configDiff = False }
 
 undocumentedOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 undocumentedOptions = undefined
