@@ -12,6 +12,7 @@ type FilePath = String
 type Args = () -- Defined in QuichCheck
 type Arg e = () -- inner type of Example
 type ExitCode = Int
+type Formatter = Int
 
 type SpecWith a = SpecM a ()
 
@@ -371,16 +372,26 @@ data ColorMode = ColorAuto | ColorNever | ColorAlways
 -- stub
 configFileOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 configFileOptions = [
-      Option   []  ["color"]            (NoArg setColor)                    (h "colorize the output")
-    , Option   []  ["no-color"]         (NoArg setNoColor)                  (h "do not colorize the output")
-    , Option   []  ["diff"]             (NoArg setDiff)                     (h "show colorized diffs")
-    , Option   []  ["no-diff"]          (NoArg setNoDiff)                   (h "do not show colorized diffs")
+      Option   []    ["color"]            (NoArg setColor)                    (h "colorize the output")
+    , Option   []    ["no-color"]         (NoArg setNoColor)                  (h "do not colorize the output")
+    , Option   []    ["diff"]             (NoArg setDiff)                     (h "show colorized diffs")
+    , Option   []    ["no-diff"]          (NoArg setNoDiff)                   (h "do not show colorized diffs")
+    , mkOption ['f']  "format"            (OptionArg "FORMATTER" readFormatter setFormatter) formatHelp
     ]
     where
         setColor   = set $ \config -> config.{ configColorMode = ColorAlways }
         setNoColor = set $ \config -> config.{ configColorMode = ColorNever }
         setDiff    = set $ \config -> config.{ configDiff = True }
         setNoDiff  = set $ \config -> config.{ configDiff = False }
+
+        readFormatter :: String -> Maybe Formatter
+        readFormatter = undefined
+
+        setFormatter :: Formatter -> Config -> Config
+        setFormatter = undefined
+
+formatHelp :: String
+formatHelp = undefined
 
 undocumentedOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 undocumentedOptions = undefined
