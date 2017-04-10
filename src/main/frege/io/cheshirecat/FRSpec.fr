@@ -377,6 +377,7 @@ configFileOptions = [
     , Option   []    ["diff"]             (NoArg setDiff)                     (h "show colorized diffs")
     , Option   []    ["no-diff"]          (NoArg setNoDiff)                   (h "do not show colorized diffs")
     , mkOption ['f']  "format"            (OptionArg "FORMATTER" readFormatter setFormatter) formatHelp
+    , mkOption ['o']  "out"               (OptionArg "FILE" return setOutputFile)   (h "write output to a file instead of STDOUT")
     ]
     where
         setColor   = set $ \config -> config.{ configColorMode = ColorAlways }
@@ -389,6 +390,9 @@ configFileOptions = [
 
         setFormatter :: Formatter -> Config -> Config
         setFormatter = undefined
+
+        setOutputFile :: String -> Config -> Config
+        setOutputFile = undefined
 
 formatHelp :: String
 formatHelp = undefined
