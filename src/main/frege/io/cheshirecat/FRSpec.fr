@@ -378,6 +378,7 @@ configFileOptions = [
     , Option   []    ["no-diff"]          (NoArg setNoDiff)                   (h "do not show colorized diffs")
     , mkOption ['f']  "format"            (OptionArg "FORMATTER" readFormatter setFormatter) formatHelp
     , mkOption ['o']  "out"               (OptionArg "FILE" return setOutputFile)   (h "write output to a file instead of STDOUT")
+    , mkOption []     "depth"             (OptionArg "N" readMaybe setDepth)        (h "maximum depth of generated test values for SmallCheck properties")
     ]
     where
         setColor   = set $ \config -> config.{ configColorMode = ColorAlways }
@@ -396,6 +397,9 @@ configFileOptions = [
 
 formatHelp :: String
 formatHelp = undefined
+
+setDepth :: Int -> Config -> Config
+setDepth = undefined
 
 undocumentedOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 undocumentedOptions = undefined
