@@ -379,6 +379,7 @@ configFileOptions = [
     , mkOption ['f']  "format"            (OptionArg "FORMATTER" readFormatter setFormatter) formatHelp
     , mkOption ['o']  "out"               (OptionArg "FILE" return setOutputFile)   (h "write output to a file instead of STDOUT")
     , mkOption []     "depth"             (OptionArg "N" readMaybe setDepth)        (h "maximum depth of generated test values for SmallCheck properties")
+    , mkOption ['a']  "qc-max-success"    (OptionArg "N" readMaybe setMaxSuccess)   (h "maximum number of successful tests before a QuickCheck property succeeds")
     ]
     where
         setColor   = set $ \config -> config.{ configColorMode = ColorAlways }
@@ -400,6 +401,9 @@ formatHelp = undefined
 
 setDepth :: Int -> Config -> Config
 setDepth = undefined
+
+setMaxSuccess :: Int -> Config -> Config
+setMaxSuccess = undefined
 
 undocumentedOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 undocumentedOptions = undefined
