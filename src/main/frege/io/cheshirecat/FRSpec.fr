@@ -382,6 +382,7 @@ configFileOptions = [
     , mkOption ['a']  "qc-max-success"    (OptionArg "N" readMaybe setMaxSuccess)   (h "maximum number of successful tests before a QuickCheck property succeeds")
     , mkOption []     "qc-max-size"       (OptionArg "N" readMaybe setMaxSize)      (h "size to use for the biggest test cases")
     , mkOption []     "qc-max-discard"    (OptionArg "N" readMaybe setMaxDiscardRatio) (h "maximum number of discarded tests per successful test before giving up")
+    , mkOption []     "seed"              (OptionArg "N" readMaybe setSeed)         (h "used seed for QuickCheck properties")
     ]
     where
         setColor   = set $ \config -> config.{ configColorMode = ColorAlways }
@@ -412,6 +413,9 @@ setMaxSize = undefined
 
 setMaxDiscardRatio :: Int -> Config -> Config
 setMaxDiscardRatio = undefined
+
+setSeed :: Integer -> Config -> Config
+setSeed = undefined
 
 undocumentedOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 undocumentedOptions = undefined
