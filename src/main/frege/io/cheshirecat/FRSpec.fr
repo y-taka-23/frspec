@@ -178,6 +178,7 @@ data Config = Config
     , configSkipPredicate             :: Maybe (Path -> Bool)
     , configColorMode                 :: ColorMode
     , configDiff                      :: Bool
+    , configPrintCpuTime              :: Bool
     }
 
 defaultConfig :: Config
@@ -193,6 +194,7 @@ defaultConfig = Config
     , configSkipPredicate             = Nothing
     , configColorMode                 = ColorAuto
     , configDiff                      = True
+    , configPrintCpuTime              = False
     }
 
 data Summary = Summary
@@ -383,12 +385,14 @@ configFileOptions = [
     , mkOption []     "qc-max-size"       (OptionArg "N" readMaybe setMaxSize)      (h "size to use for the biggest test cases")
     , mkOption []     "qc-max-discard"    (OptionArg "N" readMaybe setMaxDiscardRatio) (h "maximum number of discarded tests per successful test before giving up")
     , mkOption []     "seed"              (OptionArg "N" readMaybe setSeed)         (h "used seed for QuickCheck properties")
+    , Option   []    ["print-cpu-time"]   (NoArg setPrintCpuTime)             (h "include used CPU time in summary")
     ]
     where
-        setColor   = set $ \config -> config.{ configColorMode = ColorAlways }
-        setNoColor = set $ \config -> config.{ configColorMode = ColorNever }
-        setDiff    = set $ \config -> config.{ configDiff = True }
-        setNoDiff  = set $ \config -> config.{ configDiff = False }
+        setColor        = set $ \config -> config.{ configColorMode = ColorAlways }
+        setNoColor      = set $ \config -> config.{ configColorMode = ColorNever }
+        setDiff         = set $ \config -> config.{ configDiff = True }
+        setNoDiff       = set $ \config -> config.{ configDiff = False }
+        setPrintCpuTime = set $ \config -> config.{ configPrintCpuTime = True }
 
         readFormatter :: String -> Maybe Formatter
         readFormatter = undefined
