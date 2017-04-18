@@ -179,6 +179,7 @@ data Config = Config
     , configColorMode                 :: ColorMode
     , configDiff                      :: Bool
     , configPrintCpuTime              :: Bool
+    , configDryRun                    :: Bool
     }
 
 defaultConfig :: Config
@@ -195,6 +196,7 @@ defaultConfig = Config
     , configColorMode                 = ColorAuto
     , configDiff                      = True
     , configPrintCpuTime              = False
+    , configDryRun                    = False
     }
 
 data Summary = Summary
@@ -386,6 +388,7 @@ configFileOptions = [
     , mkOption []     "qc-max-discard"    (OptionArg "N" readMaybe setMaxDiscardRatio) (h "maximum number of discarded tests per successful test before giving up")
     , mkOption []     "seed"              (OptionArg "N" readMaybe setSeed)         (h "used seed for QuickCheck properties")
     , Option   []    ["print-cpu-time"]   (NoArg setPrintCpuTime)             (h "include used CPU time in summary")
+    , Option   []    ["dry-run"]          (NoArg setDryRun)                   (h "pretend that everything passed; don't verify anything")
     ]
     where
         setColor        = set $ \config -> config.{ configColorMode = ColorAlways }
@@ -393,6 +396,7 @@ configFileOptions = [
         setDiff         = set $ \config -> config.{ configDiff = True }
         setNoDiff       = set $ \config -> config.{ configDiff = False }
         setPrintCpuTime = set $ \config -> config.{ configPrintCpuTime = True }
+        setDryRun       = set $ \config -> config.{ configDryRun = True }
 
         readFormatter :: String -> Maybe Formatter
         readFormatter = undefined
