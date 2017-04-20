@@ -392,6 +392,7 @@ configFileOptions = [
     , Option   []    ["print-cpu-time"]   (NoArg setPrintCpuTime)             (h "include used CPU time in summary")
     , Option   []    ["dry-run"]          (NoArg setDryRun)                   (h "pretend that everything passed; don't verify anything")
     , Option   []    ["fail-fast"]        (NoArg setFastFail)                 (h "abort on first failure")
+    , Option   ['r'] ["rerun"]            (NoArg setRerun)                    (h "rerun all examples that failed in the previous test run (only works in combination with --failure-report or in GHCi")
     ]
     where
         setColor        = set $ \config -> config.{ configColorMode = ColorAlways }
@@ -401,6 +402,7 @@ configFileOptions = [
         setPrintCpuTime = set $ \config -> config.{ configPrintCpuTime = True }
         setDryRun       = set $ \config -> config.{ configDryRun = True }
         setFastFail     = set $ \config -> config.{ configFastFail = True }
+        setRerun        = set $ \config -> config.{ configRerun = True }
 
         readFormatter :: String -> Maybe Formatter
         readFormatter = undefined
