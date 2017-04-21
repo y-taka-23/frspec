@@ -393,6 +393,7 @@ configFileOptions = [
     , Option   []    ["dry-run"]          (NoArg setDryRun)                   (h "pretend that everything passed; don't verify anything")
     , Option   []    ["fail-fast"]        (NoArg setFastFail)                 (h "abort on first failure")
     , Option   ['r'] ["rerun"]            (NoArg setRerun)                    (h "rerun all examples that failed in the previous test run (only works in combination with --failure-report or in GHCi")
+    , mkOption []     "failure-report"    (OptionArg "FILE" return setFailureReport) (h "read/write a failure report for use with --rerun")
     ]
     where
         setColor        = set $ \config -> config.{ configColorMode = ColorAlways }
@@ -412,6 +413,9 @@ configFileOptions = [
 
         setOutputFile :: String -> Config -> Config
         setOutputFile = undefined
+
+        setFailureReport :: String -> Config -> Config
+        setFailureReport = undefined
 
 formatHelp :: String
 formatHelp = undefined
