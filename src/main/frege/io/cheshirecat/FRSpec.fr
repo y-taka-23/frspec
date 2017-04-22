@@ -394,6 +394,7 @@ configFileOptions = [
     , Option   []    ["fail-fast"]        (NoArg setFastFail)                 (h "abort on first failure")
     , Option   ['r'] ["rerun"]            (NoArg setRerun)                    (h "rerun all examples that failed in the previous test run (only works in combination with --failure-report or in GHCi")
     , mkOption []     "failure-report"    (OptionArg "FILE" return setFailureReport) (h "read/write a failure report for use with --rerun")
+    , Option   []    ["rerun-all-on-success"] (NoArg setRerunAllOnSuccess)    (h "run the whole test suite after a previously failing rerun succeeds for the first time (only works in combination with --rerun)")
     ]
     where
         setColor        = set $ \config -> config.{ configColorMode = ColorAlways }
@@ -404,6 +405,7 @@ configFileOptions = [
         setDryRun       = set $ \config -> config.{ configDryRun = True }
         setFastFail     = set $ \config -> config.{ configFastFail = True }
         setRerun        = set $ \config -> config.{ configRerun = True }
+        setRerunAllOnSuccess = set $ \config -> config.{ configRerunAllOnSuccess = True }
 
         readFormatter :: String -> Maybe Formatter
         readFormatter = undefined
