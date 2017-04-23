@@ -395,6 +395,7 @@ configFileOptions = [
     , Option   ['r'] ["rerun"]            (NoArg setRerun)                    (h "rerun all examples that failed in the previous test run (only works in combination with --failure-report or in GHCi")
     , mkOption []     "failure-report"    (OptionArg "FILE" return setFailureReport) (h "read/write a failure report for use with --rerun")
     , Option   []    ["rerun-all-on-success"] (NoArg setRerunAllOnSuccess)    (h "run the whole test suite after a previously failing rerun succeeds for the first time (only works in combination with --rerun)")
+    , mkOption ['j']  "jobs"              (OptionArg "N" readMaxJobs setMaxJobs)    (h "run at most N parallelizable tests simultaneously (default: number of available processors)")
     ]
     where
         setColor        = set $ \config -> config.{ configColorMode = ColorAlways }
@@ -418,6 +419,12 @@ configFileOptions = [
 
         setFailureReport :: String -> Config -> Config
         setFailureReport = undefined
+
+        readMaxJobs :: String -> Maybe Int
+        readMaxJobs = undefined
+
+        setMaxJobs :: Int -> Config -> Config
+        setMaxJobs = undefined
 
 formatHelp :: String
 formatHelp = undefined
