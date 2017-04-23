@@ -34,6 +34,12 @@ data Params = Params
 
 --instance Show Params where
 
+defaultParams :: Params
+defaultParams = Params {
+      paramsQuickCheckArgs  = undefined
+    , paramsSmallCheckDepth = 5
+}
+
 type Progress = (Int, Int)
 
 type ProgressCallback = Progress -> IO ()
@@ -181,6 +187,7 @@ data Config = Config
     , configPrintCpuTime              :: Bool
     , configDryRun                    :: Bool
     , configFastFail                  :: Bool
+    , configSmallCheckDepth           :: Int
     }
 
 defaultConfig :: Config
@@ -199,6 +206,7 @@ defaultConfig = Config
     , configPrintCpuTime              = False
     , configDryRun                    = False
     , configFastFail                  = False
+    , configSmallCheckDepth           = defaultParams.paramsSmallCheckDepth
     }
 
 data Summary = Summary
@@ -430,7 +438,7 @@ formatHelp :: String
 formatHelp = undefined
 
 setDepth :: Int -> Config -> Config
-setDepth = undefined
+setDepth n c = c.{ configSmallCheckDepth = n }
 
 setMaxSuccess :: Int -> Config -> Config
 setMaxSuccess = undefined
