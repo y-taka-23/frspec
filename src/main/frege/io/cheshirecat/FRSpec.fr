@@ -188,6 +188,7 @@ data Config = Config
     , configDryRun                    :: Bool
     , configFastFail                  :: Bool
     , configSmallCheckDepth           :: Int
+    , configFormatter                 :: Maybe Formatter
     }
 
 defaultConfig :: Config
@@ -207,6 +208,7 @@ defaultConfig = Config
     , configDryRun                    = False
     , configFastFail                  = False
     , configSmallCheckDepth           = defaultParams.paramsSmallCheckDepth
+    , configFormatter                 = Nothing
     }
 
 data Summary = Summary
@@ -420,7 +422,7 @@ configFileOptions = [
         readFormatter = undefined
 
         setFormatter :: Formatter -> Config -> Config
-        setFormatter = undefined
+        setFormatter f c = c.{ configFormatter = Just f }
 
         setOutputFile :: String -> Config -> Config
         setOutputFile = undefined
