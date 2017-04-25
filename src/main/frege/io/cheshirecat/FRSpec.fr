@@ -189,6 +189,7 @@ data Config = Config
     , configFastFail                  :: Bool
     , configSmallCheckDepth           :: Int
     , configFormatter                 :: Maybe Formatter
+    , configConcurrentJobs            :: Maybe Int
     }
 
 defaultConfig :: Config
@@ -209,6 +210,7 @@ defaultConfig = Config
     , configFastFail                  = False
     , configSmallCheckDepth           = defaultParams.paramsSmallCheckDepth
     , configFormatter                 = Nothing
+    , configConcurrentJobs            = Nothing
     }
 
 data Summary = Summary
@@ -434,7 +436,7 @@ configFileOptions = [
         readMaxJobs = undefined
 
         setMaxJobs :: Int -> Config -> Config
-        setMaxJobs = undefined
+        setMaxJobs n c = c.{ configConcurrentJobs = Just n }
 
 formatHelp :: String
 formatHelp = undefined
