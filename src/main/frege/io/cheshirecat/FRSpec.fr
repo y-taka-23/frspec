@@ -190,6 +190,7 @@ data Config = Config
     , configSmallCheckDepth           :: Int
     , configFormatter                 :: Maybe Formatter
     , configConcurrentJobs            :: Maybe Int
+    , configFailureReport             :: Maybe FilePath
     }
 
 defaultConfig :: Config
@@ -211,6 +212,7 @@ defaultConfig = Config
     , configSmallCheckDepth           = defaultParams.paramsSmallCheckDepth
     , configFormatter                 = Nothing
     , configConcurrentJobs            = Nothing
+    , configFailureReport             = Nothing
     }
 
 data Summary = Summary
@@ -430,7 +432,7 @@ configFileOptions = [
         setOutputFile = undefined
 
         setFailureReport :: String -> Config -> Config
-        setFailureReport = undefined
+        setFailureReport file c = c.{ configFailureReport = Just file }
 
         readMaxJobs :: String -> Maybe Int
         readMaxJobs = undefined
