@@ -435,7 +435,10 @@ configFileOptions = [
         setFailureReport file c = c.{ configFailureReport = Just file }
 
         readMaxJobs :: String -> Maybe Int
-        readMaxJobs = undefined
+        readMaxJobs s = do
+            n <- readMaybe s
+            guard $ n > 0
+            return n
 
         setMaxJobs :: Int -> Config -> Config
         setMaxJobs n c = c.{ configConcurrentJobs = Just n }
