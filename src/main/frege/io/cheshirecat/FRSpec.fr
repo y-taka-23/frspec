@@ -450,7 +450,7 @@ setDepth :: Int -> Config -> Config
 setDepth n c = c.{ configSmallCheckDepth = n }
 
 setMaxSuccess :: Int -> Config -> Config
-setMaxSuccess = undefined
+setMaxSuccess n c = c.{ configQuickCheckMaxSuccess = Just n }
 
 setMaxSize :: Int -> Config -> Config
 setMaxSize = undefined
