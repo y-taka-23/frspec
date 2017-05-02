@@ -456,7 +456,7 @@ setMaxSize :: Int -> Config -> Config
 setMaxSize n c = c.{ configQuickCheckMaxSize = Just n }
 
 setMaxDiscardRatio :: Int -> Config -> Config
-setMaxDiscardRatio = undefined
+setMaxDiscardRatio n c = c.{ configQuickCheckMaxDiscardRatio = Just n }
 
 setSeed :: Integer -> Config -> Config
 setSeed = undefined
