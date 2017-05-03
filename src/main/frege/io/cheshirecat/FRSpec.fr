@@ -459,7 +459,7 @@ setMaxDiscardRatio :: Int -> Config -> Config
 setMaxDiscardRatio n c = c.{ configQuickCheckMaxDiscardRatio = Just n }
 
 setSeed :: Integer -> Config -> Config
-setSeed = undefined
+setSeed n c = c.{ configQuickCheckSeed = Just n }
 
 undocumentedOptions :: [OptDescr (OptResult Maybe -> OptResult Maybe)]
 undocumentedOptions = undefined
