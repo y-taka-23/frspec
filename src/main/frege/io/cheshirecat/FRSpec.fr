@@ -443,6 +443,15 @@ configFileOptions = [
         setMaxJobs :: Int -> Config -> Config
         setMaxJobs n c = c.{ configConcurrentJobs = Just n }
 
+-- stub
+formatters :: [(String, Formatter)]
+formatters = [
+      ("specdoc", undefined)
+    , ("progress", undefined)
+    , ("failed-examples", undefined)
+    , ("silent", undefined)
+    ]
+
 formatHelp :: String
 formatHelp = undefined
 
