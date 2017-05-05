@@ -453,7 +453,9 @@ formatters = [
     ]
 
 formatHelp :: String
-formatHelp = undefined
+formatHelp =
+    unlines $ addLineBreaks "use a custom formatter; this can be one of:" ++
+    map (("   " ++) . fst) formatters
 
 setDepth :: Int -> Config -> Config
 setDepth n c = c.{ configSmallCheckDepth = n }
