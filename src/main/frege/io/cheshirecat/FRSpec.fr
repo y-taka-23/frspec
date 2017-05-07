@@ -12,6 +12,9 @@ type FilePath = String
 type Args = () -- Defined in QuichCheck
 type Arg e = () -- inner type of Example
 type ExitCode = Int
+type FormatM a = ()
+type Handle = ()
+type FailureReason = ()
 
 type SpecWith a = SpecM a ()
 
@@ -442,7 +445,18 @@ configFileOptions = [
         setMaxJobs :: Int -> Config -> Config
         setMaxJobs n c = c.{ configConcurrentJobs = Just n }
 
-data Formatter = Formatter
+data Formatter = Formatter {
+      headerFormatter     :: FormatM ()
+    , exampleGroupStarted :: [String] -> String -> FormatM ()
+    , exampleGroupDone    :: FormatM ()
+    , exampleProgress     :: Handle -> Path -> Progress -> IO ()
+    , exampleSucceeded    :: Path -> FormatM ()
+    , exampleFailed       ::  Path -> Either Throwable FailureReason -> FormatM ()
+--    , exampleFailed       ::  Path -> Either SomeException FailureReason -> FormatM ()
+    , examplePending      :: Path -> Maybe String -> FormatM ()
+    , failedFormatter     :: FormatM ()
+    , footerFormatter     :: FormatM ()
+    }
 
 specdoc :: Formatter
 specdoc = undefined
@@ -456,7 +470,6 @@ failed_examples = undefined
 silent :: Formatter
 silent = undefined
 
--- stub
 formatters :: [(String, Formatter)]
 formatters = [
       ("specdoc", specdoc)
