@@ -12,9 +12,14 @@ type FilePath = String
 type Args = () -- Defined in QuichCheck
 type Arg e = () -- inner type of Example
 type ExitCode = Int
-type FormatM a = ()
 type Handle = ()
 type FailureReason = ()
+
+-- stub
+data FormatM a = FormatM a
+instance Monad FormatM where
+    return = undefined
+    (>>=) = undefined
 
 type SpecWith a = SpecM a ()
 
@@ -468,7 +473,17 @@ failed_examples :: Formatter
 failed_examples = undefined
 
 silent :: Formatter
-silent = undefined
+silent = Formatter {
+      headerFormatter     = return ()
+    , exampleGroupStarted = \_ _ -> return ()
+    , exampleGroupDone    = return ()
+    , exampleProgress     = \_ _ _ -> return ()
+    , exampleSucceeded    = \_ -> return ()
+    , exampleFailed       = \_ _ -> return ()
+    , examplePending      = \_ _ -> return ()
+    , failedFormatter     = return ()
+    , footerFormatter     = return ()
+    }
 
 formatters :: [(String, Formatter)]
 formatters = [
