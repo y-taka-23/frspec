@@ -470,7 +470,16 @@ progress :: Formatter
 progress = undefined
 
 failed_examples :: Formatter
-failed_examples = undefined
+failed_examples = silent.{
+      failedFormatter = defaultFailedFormatter
+    , footerFormatter = defaultFooter
+    }
+
+defaultFailedFormatter :: FormatM ()
+defaultFailedFormatter = undefined
+
+defaultFooter :: FormatM ()
+defaultFooter = undefined
 
 silent :: Formatter
 silent = Formatter {
