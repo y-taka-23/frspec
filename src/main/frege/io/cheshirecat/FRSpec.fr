@@ -467,7 +467,25 @@ specdoc :: Formatter
 specdoc = undefined
 
 progress :: Formatter
-progress = undefined
+progress = silent.{
+      exampleSucceeded = \_   -> withSuccessColor $ write "."
+    , exampleFailed    = \_ _ -> withFailColor    $ write "F"
+    , examplePending   = \_ _ -> withPendingColor $ write "."
+    , failedFormatter  = defaultFailedFormatter
+    , footerFormatter  = defaultFooter
+    }
+
+withSuccessColor :: FormatM a -> FormatM a
+withSuccessColor = undefined
+
+withFailColor :: FormatM a -> FormatM a
+withFailColor = undefined
+
+withPendingColor :: FormatM a -> FormatM a
+withPendingColor = undefined
+
+write :: String -> FormatM ()
+write = undefined
 
 failed_examples :: Formatter
 failed_examples = silent.{
