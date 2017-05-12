@@ -484,6 +484,9 @@ withFailColor = undefined
 withPendingColor :: FormatM a -> FormatM a
 withPendingColor = undefined
 
+writeLine :: String -> FormatM ()
+writeLine s = write s >> write "\n"
+
 write :: String -> FormatM ()
 write = undefined
 
