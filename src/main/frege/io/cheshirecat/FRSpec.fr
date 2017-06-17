@@ -14,6 +14,7 @@ type Arg e = () -- inner type of Example
 type ExitCode = Int
 type Handle = ()
 type FailureReason = ()
+type FailureRecord = ()
 
 -- stub
 data FormatM a = FormatM a
@@ -462,6 +463,29 @@ data Formatter = Formatter {
     , failedFormatter     :: FormatM ()
     , footerFormatter     :: FormatM ()
     }
+
+-- Todo: Is 'forall' not allowed in algebraic datatypes?
+data FormatF a next =
+      GetSuccessCount (Int -> next)
+    | GetPendingCount (Int -> next)
+    | GetFailCount (Int -> next)
+    | GetFailMessages ([FailureRecord] -> next)
+    | UsedSeed (Integer -> next)
+    | GetCPUTime (Maybe Double -> next)
+    | GetRealTime (Double -> next)
+    | Writer (String -> next)
+--    | forall a. WithFailColor (FormatM a) (a -> next)
+--    | forall a. WithSuccessColor (FormatM a) (a -> next)
+--    | forall a. WithPendingColor (FormatM a) (a -> next)
+--    | forall a. WithInfoColor (FormatM a) (a -> next)
+    | WithFailColor (FormatM a) (a -> next)
+    | WithSuccessColor (FormatM a) (a -> next)
+    | WithPendingColor (FormatM a) (a -> next)
+    | WithInfoColor (FormatM a) (a -> next)
+    | ExtraChunk String next
+    | MissingChunk String next
+--    | forall a. LiftIO (IO a) (a -> next)
+    | LiftIO (IO a) (a -> next)
 
 specdoc :: Formatter
 specdoc = undefined
